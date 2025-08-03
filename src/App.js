@@ -10,6 +10,8 @@ function App() {
       <Card num={randNum()} />
       <Card num={randNum()} />
       <Card num={randNum()} />
+      <Card num={randNum()} />
+      <Card num={randNum()} />
     </div>
   );
 }
