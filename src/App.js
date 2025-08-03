@@ -1,12 +1,17 @@
-import logo from './logo.svg';
 import './App.css';
+import Card from './components/Card';
 
-function Header() {
-  return <h1>Hello World</h1>
-}
+const randNum = () => Math.floor(Math.random() * 100) + 1;
 
 function App() {
-  return <Header />
+  return (
+    <div>
+      <h1>Task: Add three Card elements</h1>
+      <Card num={randNum()} />
+      <Card num={randNum()} />
+      <Card num={randNum()} />
+    </div>
+  );
 }
 
 export default App;
