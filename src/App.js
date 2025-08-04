@@ -1,17 +1,18 @@
 import './App.css';
-import Card from './components/Card';
+// import ModeToggler from './ModeToggler';
+import MealsProvider from "./providers/MealsProvider";
+import MealsList from "./components/MealsList";
+import Counter from "./components/Counter";
 
 const randNum = () => Math.floor(Math.random() * 100) + 1;
 
 function App() {
   return (
     <div>
-      <h1>Task: Add three Card elements</h1>
-      <Card num={randNum()} />
-      <Card num={randNum()} />
-      <Card num={randNum()} />
-      <Card num={randNum()} />
-      <Card num={randNum()} />
+      <MealsProvider>
+        <MealsList />
+        <Counter />
+      </MealsProvider>
     </div>
   );
 }
