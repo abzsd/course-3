@@ -7,7 +7,7 @@ import './App.css';
 // import AboutMe from "./AboutMe";
 // import { Routes, Route, Link } from 'react-router-dom';
 // import ReactPlayer from "react-player";
-import React from 'react';
+import React, { useReducer } from 'react';
 // import DessertsList from "./DessertsList"
 // import { UserProvider, useUser } from './UserContext';
 import { ThemeProvider, useTheme } from "./ThemeContext";
@@ -151,12 +151,23 @@ const Page = () => {
   );
 };
 
+const reducer = (state, action) => {
+  if (action.type === "buy_ingredients") return { money: state.money - 10 };
+  if (action.type === "sell_a_meal") return { money: state.money + 10 };
+  return state;
+}
+
 function App() {
   const { theme } = useTheme();
   const [allGoals, updateAllGoals] = React.useState([]);
   const [user, setUser] = React.useState([]);
 
   function addGoal(goal) { updateAllGoals([...allGoals, goal]); }
+
+  // useReducer Hook
+  const initialState = { money: 100 };
+  const [state, dispatch] = useReducer(reducer, initialState);
+
 
   const fetchData = () => {
     fetch("https://randomuser.me/api/?results=1")
@@ -169,6 +180,7 @@ function App() {
   }, []);
 
   return Object.keys(user).length > 0 ? (
+    <>
     <div className='App'
       style={{
         backgroundColor: theme === "light" ? "white" : "black",
@@ -184,7 +196,15 @@ function App() {
       <h2>First Name: {user.results[0].name.first}</h2>
       <h2>Last Name: {user.results[0].name.last}</h2>
       <img src={user.results[0].picture.large} width="300" height="300" alt=""/>
+        <h1>Wallet: {state.money}</h1>
+        <div>
+          <button onClick={() => dispatch({ type: 'buy_ingredients' })}>Shopping for veggies!</button>
+        </div>
+        <div>
+          <button onClick={() => dispatch({type:'sell_a_meal'})}>Serve a meal to the customer</button>
+        </div>
     </div>
+    </>
   ) : (
       <h1>Data Pending...</h1>
   );
