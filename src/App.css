@@ -41,7 +41,7 @@
 /* App.css */
 
 /* General Styles */
-body {
+/* body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
@@ -59,12 +59,12 @@ h1 {
 }
 
 /* Cards container */
-div {
+/* div {
     text-align: center;
-}
+} */
 
 /* Card styles */
-.card {
+/* .card {
     background-color: #ffffff;
     border: 2px solid #e0e0e0;
     border-radius: 8px;
@@ -89,4 +89,24 @@ div {
 .card p {
     font-size: 1em;
     color: #333;
+} */
+
+.App {
+  display: flex;
+  padding: 16px;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.Page {
+  max-width: 1280px;
+  margin: 0 auto;
 }
