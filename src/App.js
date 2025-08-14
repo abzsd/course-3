@@ -7,13 +7,52 @@ import './App.css';
 // import AboutMe from "./AboutMe";
 // import { Routes, Route, Link } from 'react-router-dom';
 // import ReactPlayer from "react-player";
-// import React from 'react';
+import React from 'react';
 // import DessertsList from "./DessertsList"
 // import { UserProvider, useUser } from './UserContext';
 import { ThemeProvider, useTheme } from "./ThemeContext";
 import Switch from "./Switch";
 
+function GoalForm(props) {
+  const [formData, setFormData] = React.useState({ goal: "", by: "" });
 
+  function changeHandler(e) {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  }
+
+  function submitHandler(e) {
+    e.preventDefault();
+    props.onAdd(formData);
+    setFormData({ goal: "", by: "" });
+  }
+
+  return (
+    <>
+      <h1> My Goals </h1>
+      <form onSubmit={submitHandler}>
+        <div>
+          <input type="text" name="goal" placeholder='Goal' value={formData.goal} onChange={changeHandler} />
+        </div>
+        <div>
+          <input type="text" name="by" placeholder='By...' value={formData.by} onChange={changeHandler} />
+        </div>
+        <button>Submit Goal</button>
+      </form>
+    </>
+  );
+}
+
+function ListOfGoals(props) {
+  return (
+    <ul>
+      {props.allGoals.map((g) => (
+        <li key={g.goal}>
+          <span>My goal is to {g.goal}, by {g.by}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 // const randNum = () => Math.floor(Math.random() * 100) + 1;
 // const desserts = [
@@ -114,14 +153,39 @@ const Page = () => {
 
 function App() {
   const { theme } = useTheme();
-  return (
+  const [allGoals, updateAllGoals] = React.useState([]);
+  const [user, setUser] = React.useState([]);
+
+  function addGoal(goal) { updateAllGoals([...allGoals, goal]); }
+
+  const fetchData = () => {
+    fetch("https://randomuser.me/api/?results=1")
+      .then(response => response.json())
+      .then(data => setUser(data));
+  }
+
+  React.useEffect(() => {
+    fetchData();
+  }, []);
+
+  return Object.keys(user).length > 0 ? (
     <div className='App'
       style={{
-      backgroundColor: theme === "light" ? "white" : "black",
+        backgroundColor: theme === "light" ? "white" : "black",
+        color: theme === "light" ? "black" : "white", // for changing the text overall
     }}>
       <Header />
       <Page />
+
+      <GoalForm onAdd={addGoal} />
+      <ListOfGoals allGoals={allGoals} />
+
+      <h1>Data Returned</h1>
+      <h2>First Name: {user.results[0].name.first}</h2>
+      <h2>Last Name: {user.results[0].name.last}</h2>
     </div>
+  ) : (
+      <h1>Data Pending...</h1>
   );
 }
 
